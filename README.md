@@ -27,3 +27,11 @@ python backend/app/seed.py
 ```
 
 The script is idempotent; rerun whenever you need to refresh the sample data.
+
+## Tests
+
+Smoke tests live in `backend/tests/` and ensure `/api/health`, `/api/universities`, `/api/meta`, and key filters behave as expected. Run them locally with:
+
+```bash
+PYTHONPATH=backend pytest backend/tests
+```

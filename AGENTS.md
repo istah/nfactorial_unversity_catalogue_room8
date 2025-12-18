@@ -109,3 +109,4 @@ All agents MUST:
 - **Configuration**: Centralized settings (`backend/app/core/config.py`) expose `DATABASE_URL`; `.env.example` shows expected keys.
 - **Migrations**: Alembic initialized under `backend/migrations`. Use `cd backend && alembic upgrade head` to apply and `alembic revision --autogenerate -m \"...\"` for new schema versions.
 - **Demo Data**: Run `python backend/app/seed.py` to populate countries, universities, programs, and exam requirements. Script is idempotent for repeated local runs.
+- **Testing**: Smoke tests live in `backend/tests/` and can be executed with `PYTHONPATH=backend pytest backend/tests`. They spin up an in-memory SQLite DB, seed deterministic data, and validate health, meta, list/detail, and filter behavior.
