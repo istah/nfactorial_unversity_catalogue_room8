@@ -8,9 +8,9 @@ using the existing backend services and database for data access.
 import json
 from typing import Optional
 
-from langchain.agents import create_agent
-from langchain.chat_models import init_chat_model
-from langchain.tools import tool
+from langchain_openai import ChatOpenAI
+from langchain_core.tools import tool
+from langgraph.prebuilt import create_react_agent
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -276,15 +276,16 @@ def create_university_agent(openai_api_key: str, model: str = "gpt-4o-mini"):
     Returns:
         Agent ready to handle user queries
     """
-    import os
-    os.environ["OPENAI_API_KEY"] = openai_api_key
+    llm = ChatOpenAI(
+        model=model,
+        temperature=0,
+        api_key=openai_api_key
+    )
 
-    llm = init_chat_model(model, temperature=0)
-
-    agent = create_agent(
+    agent = create_react_agent(
         model=llm,
         tools=TOOLS,
-        system_prompt=SYSTEM_PROMPT,
+        prompt=SYSTEM_PROMPT,
     )
 
     return agent

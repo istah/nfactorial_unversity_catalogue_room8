@@ -18,6 +18,38 @@ All contributions should follow the agent guidelines, use explicit imports, and 
 - `GET /api/universities` – paginated listing with filters for country, program, exam, minimum score, and name search.
 - `GET /api/universities/{university_id}` – detailed university payload including programs and exam requirements.
 - `GET /api/meta` – metadata for filters (countries, programs, exams).
+- `POST /api/chat` – AI-powered chat endpoint for university admissions assistance.
+
+## AI Chat Assistant
+
+The project includes an AI-powered chat assistant built with LangGraph and OpenAI. It helps students find and compare universities based on their preferences.
+
+### Chat Endpoint
+
+```bash
+POST /api/chat
+Content-Type: application/json
+
+{
+  "message": "What universities are in Germany?",
+  "chat_history": []
+}
+```
+
+### Available AI Tools
+
+1. **get_available_filters** – Lists all countries, programs, and exams in the database
+2. **search_universities** – Search with filters (country, program, exam, score, query)
+3. **get_university** – Get detailed info by university ID
+4. **compare_universities** – Compare 2-5 universities side by side
+
+### Configuration
+
+Set the following in `backend/.env`:
+```
+OPENAI_API_KEY=your-api-key
+OPENAI_MODEL=gpt-4o-mini  # optional, defaults to gpt-4o-mini
+```
 
 ## Demo Data
 

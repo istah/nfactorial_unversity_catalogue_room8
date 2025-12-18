@@ -43,14 +43,15 @@ AI Engineer responsible for building the LangChain-based university admissions a
 4. Serialize ORM objects to dicts before returning JSON from tools
 5. Match the existing filter parameters: `country_code`, `program`, `exam`, `min_score`, `query`
 
-## LangChain Agent Rules
-1. Always use `@tool` decorator for tool definitions
+## LangChain/LangGraph Agent Rules
+1. Always use `@tool` decorator from `langchain_core.tools` for tool definitions
 2. Tools MUST return JSON strings for consistent LLM parsing
 3. Tool docstrings are critical - they guide the LLM on when/how to use tools
 4. Never hardcode LLM responses; always let the agent call tools for data
 5. Set `temperature=0` for deterministic, reliable tool-calling
-6. Use `create_openai_tools_agent` for OpenAI function calling
-7. Limit `max_iterations=5` to prevent infinite loops
+6. Use `create_react_agent` from `langgraph.prebuilt` for ReAct agent pattern
+7. Use `ChatOpenAI` from `langchain_openai` for the LLM
+8. Agent accepts `{"messages": [...]}` and returns `{"messages": [...]}`
 
 ## Tool Design Rules
 1. Each tool should do ONE thing well
@@ -93,3 +94,41 @@ AI Engineer responsible for building the LangChain-based university admissions a
 2. Mock OpenAI calls in unit tests
 3. Test edge cases: empty results, invalid IDs, DB connection errors
 4. Verify tool docstrings guide LLM correctly
+
+---
+
+## Current Implementation Status
+
+### Completed
+- `app/agent.py` with 4 tools using LangGraph ReAct agent
+- `app/api/chat.py` endpoint integrated with agent
+- Tools: `get_available_filters`, `search_universities`, `get_university`, `compare_universities`
+
+### Agent Architecture
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.tools import tool
+from langgraph.prebuilt import create_react_agent
+
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0, api_key=api_key)
+agent = create_react_agent(model=llm, tools=TOOLS, prompt=SYSTEM_PROMPT)
+result = agent.invoke({"messages": messages})
+```
+
+### Test Examples
+```bash
+# List available options
+curl -X POST http://localhost:8000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What universities are available?"}'
+
+# Search by country
+curl -X POST http://localhost:8000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Show me universities in Germany"}'
+
+# Get details
+curl -X POST http://localhost:8000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Tell me about Technical University of Munich"}'
+```

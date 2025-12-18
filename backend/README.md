@@ -71,3 +71,38 @@ The tests spin up an in-memory SQLite database, seed minimal reference data, and
 - `GET /api/universities` – Supports filters (`country`, `program`, `exam`, `min_score`, `q`) and pagination (`page`, `limit`). Returns country metadata and the number of programs per university.
 - `GET /api/universities/{university_id}` – Returns full university profile, including programs, degree levels, and per-exam minimum scores.
 - `GET /api/meta` – Provides countries, programs, and exams for populating filter dropdowns on the frontend.
+- `POST /api/chat` – AI-powered chat endpoint using LangGraph agent with university search tools.
+
+## AI Chat Endpoint
+
+The `/api/chat` endpoint provides an AI assistant for university admissions queries.
+
+### Request
+
+```json
+{
+  "message": "What universities offer Computer Science in Germany?",
+  "chat_history": []
+}
+```
+
+### Response
+
+```json
+{
+  "response": "Here are universities in Germany offering Computer Science...",
+  "tool_calls": null
+}
+```
+
+### Agent Tools
+
+The AI agent has access to these tools:
+- `get_available_filters` – Get all countries, programs, and exams
+- `search_universities` – Search with filters
+- `get_university` – Get details by ID
+- `compare_universities` – Compare 2-5 universities
+
+### Configuration
+
+Requires `OPENAI_API_KEY` in `.env`. Optionally set `OPENAI_MODEL` (default: `gpt-4o-mini`).
