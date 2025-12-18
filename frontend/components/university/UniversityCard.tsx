@@ -10,6 +10,9 @@ interface UniversityCardProps {
 }
 
 export const UniversityCard: React.FC<UniversityCardProps> = ({ university }) => {
+  const countryName = university.country?.name || 'Unknown';
+  const programNames = university.programs?.map((p) => p.name) || [];
+
   return (
     <Link href={`/universities/${university.id}`}>
       <Card hover className="overflow-hidden cursor-pointer h-full">
@@ -24,31 +27,28 @@ export const UniversityCard: React.FC<UniversityCardProps> = ({ university }) =>
         <div className="p-6">
           <div className="flex items-start justify-between mb-2">
             <h3 className="text-lg font-bold text-gray-900 flex-1">{university.name}</h3>
-            {university.ranking && (
-              <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                #{university.ranking}
-              </span>
-            )}
           </div>
 
-          <p className="text-sm text-gray-600 mb-1">{university.country}</p>
-          <p className="text-gray-700 text-sm mb-4 line-clamp-2">{university.description}</p>
+          <p className="text-sm text-gray-600 mb-1">{countryName}</p>
+          <p className="text-gray-700 text-sm mb-4 line-clamp-2">{university.description || 'No description'}</p>
 
-          <div className="mb-4">
-            <p className="text-xs font-semibold text-gray-600 mb-2">Специальности:</p>
-            <div className="flex flex-wrap gap-1">
-              {university.specialties.slice(0, 3).map((specialty, idx) => (
-                <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
-                  {specialty}
-                </span>
-              ))}
-              {university.specialties.length > 3 && (
-                <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
-                  +{university.specialties.length - 3}
-                </span>
-              )}
+          {programNames.length > 0 && (
+            <div className="mb-4">
+              <p className="text-xs font-semibold text-gray-600 mb-2">Программы:</p>
+              <div className="flex flex-wrap gap-1">
+                {programNames.slice(0, 3).map((program, idx) => (
+                  <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                    {program}
+                  </span>
+                ))}
+                {programNames.length > 3 && (
+                  <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                    +{programNames.length - 3}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           <Button variant="primary" size="sm" className="w-full">
             Подробнее
