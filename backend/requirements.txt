@@ -4,3 +4,8 @@ pydantic-settings>=2.2.0
 SQLAlchemy>=2.0.30
 alembic>=1.13.1
 psycopg2-binary>=2.9.0
+
+# LangChain & LLM
+langchain>=0.3.0
+langchain-openai>=0.2.0
+langchain-core>=0.3.0

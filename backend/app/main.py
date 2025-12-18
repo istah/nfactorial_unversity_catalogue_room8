@@ -1,4 +1,29 @@
-"""FastAPI application factory and entrypoint."""
+"""
+FastAPI application factory and entrypoint.
+
+=== RUN INSTRUCTIONS ===
+
+1. Install dependencies:
+   cd backend
+   pip install -r requirements.txt
+
+2. Set up environment:
+   cp .env.example .env
+   # Edit .env and add your OPENAI_API_KEY
+
+3. Run the server:
+   uvicorn app.main:app --reload
+
+4. Test the chat endpoint:
+   curl -X POST http://localhost:8000/api/chat \
+     -H "Content-Type: application/json" \
+     -d '{"message": "Find me computer science universities in USA"}'
+
+5. Available endpoints:
+   - GET  /api/health - Health check
+   - POST /api/chat   - Chat with admissions assistant
+
+"""
 
 from fastapi import FastAPI
 
