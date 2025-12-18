@@ -14,7 +14,7 @@ export const Select: React.FC<SelectProps> = ({ label, options, error, className
         className={`
           w-full px-4 py-2 border border-gray-300 rounded-lg
           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-          transition-all duration-200 bg-white
+          transition-all duration-200 bg-white text-black
           ${error ? 'border-red-500' : ''}
           ${className}
         `}

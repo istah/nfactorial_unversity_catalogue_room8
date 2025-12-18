@@ -13,7 +13,7 @@ export const Input: React.FC<InputProps> = ({ label, error, className = '', ...p
         className={`
           w-full px-4 py-2 border border-gray-300 rounded-lg
           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-          transition-all duration-200
+          transition-all duration-200 text-black placeholder:text-gray-500
           ${error ? 'border-red-500' : ''}
           ${className}
         `}
