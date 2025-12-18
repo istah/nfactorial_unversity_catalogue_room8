@@ -18,6 +18,10 @@ class Settings(BaseSettings):
         "postgresql+psycopg2://user:password@localhost:5432/university_catalog"
     )
 
+    # LLM Configuration
+    openai_api_key: str = ""
+    openai_model: str = "gpt-4o-mini"
+
     model_config = SettingsConfigDict(
         env_file=str(BASE_DIR / ".env"),
         env_file_encoding="utf-8",
