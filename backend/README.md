@@ -48,3 +48,8 @@ The API becomes available on `http://127.0.0.1:8000`. Add new routers in `app/ap
    ```bash
    alembic revision --autogenerate -m "describe change"
    ```
+
+## API Endpoints
+
+- `GET /api/universities` – Supports filters (`country`, `program`, `exam`, `min_score`, `q`) and pagination (`page`, `limit`). Returns country metadata and the number of programs per university.
+- `GET /api/universities/{university_id}` – Returns full university profile, including programs, degree levels, and per-exam minimum scores.

@@ -66,7 +66,10 @@ All agents MUST:
 ## Backend Status
 
 - **FastAPI Skeleton**: Application factory lives in `backend/app/main.py`, routers registered in `backend/app/routers.py`.
-- **Available Endpoint**: `GET /api/health` verifies service uptime. No business endpoints implemented yet.
+- **Available Endpoints**:
+  - `GET /api/health` verifies service uptime.
+  - `GET /api/universities` lists universities with filters for country, program, exam, minimum score, and fuzzy name search plus pagination.
+  - `GET /api/universities/{id}` returns detailed information with programs and per-exam requirements.
 - **Database Layer**: SQLAlchemy 2.0 models located under `backend/app/models/` cover `Country`, `University`, `Program`, `Exam`, and `Requirement` with normalized relations for filtering by geography, program, exam, and minimum score.
 - **Configuration**: Centralized settings (`backend/app/core/config.py`) expose `DATABASE_URL`; `.env.example` shows expected keys.
 - **Migrations**: Alembic initialized under `backend/migrations`. Use `cd backend && alembic upgrade head` to apply and `alembic revision --autogenerate -m \"...\"` for new schema versions.
