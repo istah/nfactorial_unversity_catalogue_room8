@@ -16,3 +16,14 @@ All contributions should follow the agent guidelines, use explicit imports, and 
 - `GET /api/health` – operational readiness probe.
 - `GET /api/universities` – paginated listing with filters for country, program, exam, minimum score, and name search.
 - `GET /api/universities/{university_id}` – detailed university payload including programs and exam requirements.
+- `GET /api/meta` – metadata for filters (countries, programs, exams).
+
+## Demo Data
+
+Use the seed script to load realistic demo content into the database:
+
+```bash
+python backend/app/seed.py
+```
+
+The script is idempotent; rerun whenever you need to refresh the sample data.

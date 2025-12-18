@@ -49,7 +49,18 @@ The API becomes available on `http://127.0.0.1:8000`. Add new routers in `app/ap
    alembic revision --autogenerate -m "describe change"
    ```
 
+## Demo Data
+
+Populate the database with reproducible demo data:
+
+```bash
+python backend/app/seed.py
+```
+
+The script is idempotent and can be re-run safely to refresh scores or add missing rows.
+
 ## API Endpoints
 
 - `GET /api/universities` – Supports filters (`country`, `program`, `exam`, `min_score`, `q`) and pagination (`page`, `limit`). Returns country metadata and the number of programs per university.
 - `GET /api/universities/{university_id}` – Returns full university profile, including programs, degree levels, and per-exam minimum scores.
+- `GET /api/meta` – Provides countries, programs, and exams for populating filter dropdowns on the frontend.

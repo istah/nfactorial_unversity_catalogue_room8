@@ -104,6 +104,8 @@ All agents MUST:
   - `GET /api/health` verifies service uptime.
   - `GET /api/universities` lists universities with filters for country, program, exam, minimum score, and fuzzy name search plus pagination.
   - `GET /api/universities/{id}` returns detailed information with programs and per-exam requirements.
+  - `GET /api/meta` exposes countries, programs, and exams for populating filters.
 - **Database Layer**: SQLAlchemy 2.0 models located under `backend/app/models/` cover `Country`, `University`, `Program`, `Exam`, and `Requirement` with normalized relations for filtering by geography, program, exam, and minimum score.
 - **Configuration**: Centralized settings (`backend/app/core/config.py`) expose `DATABASE_URL`; `.env.example` shows expected keys.
 - **Migrations**: Alembic initialized under `backend/migrations`. Use `cd backend && alembic upgrade head` to apply and `alembic revision --autogenerate -m \"...\"` for new schema versions.
+- **Demo Data**: Run `python backend/app/seed.py` to populate countries, universities, programs, and exam requirements. Script is idempotent for repeated local runs.
