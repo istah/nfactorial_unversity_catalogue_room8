@@ -6,6 +6,7 @@ AI-assisted FastAPI backend scaffold for managing a university catalog. This rep
 
 - `AGENTS.md` – describes the AI agents, roles, and constraints for contributions.
 - `backend/` – FastAPI application using an application factory pattern. See `backend/README.md` for usage instructions and API docs.
+ - `run_dev.sh` – helper script that starts backend (Uvicorn) and frontend (Next.js) concurrently with one command.
 
 ## Development Notes
 
@@ -27,6 +28,16 @@ python backend/app/seed.py
 ```
 
 The script is idempotent; rerun whenever you need to refresh the sample data.
+
+## Local Development Runner
+
+To start both services together, use the helper script from the repo root:
+
+```bash
+./run_dev.sh
+```
+
+It activates the virtual environment, boots the FastAPI backend (assigning a free port automatically), installs frontend dependencies if needed, and runs `npm run dev`. Override ports via `BACKEND_PORT` / `FRONTEND_PORT` environment variables if desired.
 
 ## Tests
 
