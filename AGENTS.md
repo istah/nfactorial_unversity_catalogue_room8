@@ -44,6 +44,34 @@ We use Codex CLI together with Context7 MCP for structured generation.
 - API documentation
 - Validate endpoints existence
 
+**Additional Responsibilities:**
+
+- Generate structured QA reports and project documentation
+- Save all reports in `qa-reports` folder in the project repository
+- Maintain versioned history of QA reports
+- Use MCP Playwright to validate runtime behavior before generating reports
+- Update Notion (Shared → QA Reports) with latest QA findings
+- Ensure documentation is consistent with backend structure and implemented endpoints
+
+**Tools:**
+
+- MCP Playwright
+- Notion Agent
+
+**Rules:**
+
+- Do not make changes in code. Work only in `qa-reports` folder.
+
+## QA & Documentation Workflow
+
+1. Analyze project using MCP Playwright and Cursor
+2. Compare implementation against QA_GUIDE.md and expected behavior
+3. Generate a structured QA report
+4. Save report in local folder `qa-reports/`
+5. Update Notion page (Shared → QA Reports) with the new report
+6. Track previous reports to maintain history and versioning
+7. Document project structure, endpoints, and data models for reference
+
 ---
 
 ## Context Usage
