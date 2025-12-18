@@ -66,6 +66,12 @@ All agents MUST:
 ## Backend Status
 
 - **FastAPI Skeleton**: Application factory lives in `backend/app/main.py`, routers registered in `backend/app/routers.py`.
+- **Backend Structure**:
+  - `app/api/` – request routers (`health.py`, `universities.py`), one file per resource.
+  - `app/services/` – database interaction layer (e.g., `university_service.py`) used by routers.
+  - `app/schemas/` – Pydantic response models shared across endpoints.
+  - `app/models/` – SQLAlchemy ORM entities for Country, University, Program, Exam, Requirement.
+  - `migrations/` – Alembic environment plus versioned schema history.
 - **Available Endpoints**:
   - `GET /api/health` verifies service uptime.
   - `GET /api/universities` lists universities with filters for country, program, exam, minimum score, and fuzzy name search plus pagination.
