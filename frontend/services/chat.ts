@@ -1,65 +1,37 @@
 import { Message } from '@/types/chat';
 
-// TODO: Replace with actual backend URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+
+interface ChatHistory {
+  role: string;
+  content: string;
+}
+
+interface ChatResponse {
+  response: string;
+  tool_calls: string[] | null;
+}
 
 export const chatService = {
   // Send message to AI assistant
-  async sendMessage(sessionId: string, content: string): Promise<Message> {
-    try {
-      const response = await fetch(`${API_BASE_URL}/chat/send`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sessionId,
-          content,
-        }),
-      });
+  async sendMessage(content: string, chatHistory: ChatHistory[] = []): Promise<string> {
+    const response = await fetch(`${API_BASE_URL}/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: content,
+        chat_history: chatHistory,
+      }),
+    });
 
-      if (!response.ok) throw new Error('Failed to send message');
-      return await response.json();
-    } catch (error) {
-      console.error('Error sending message:', error);
-      throw error;
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Failed to send message' }));
+      throw new Error(error.detail || 'Failed to send message');
     }
-  },
 
-  // Get chat history
-  async getChatHistory(sessionId: string): Promise<Message[]> {
-    try {
-      const response = await fetch(`${API_BASE_URL}/chat/history/${sessionId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) throw new Error('Failed to fetch chat history');
-      return await response.json();
-    } catch (error) {
-      console.error('Error fetching chat history:', error);
-      throw error;
-    }
-  },
-
-  // Create new chat session
-  async createSession(): Promise<string> {
-    try {
-      const response = await fetch(`${API_BASE_URL}/chat/session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) throw new Error('Failed to create session');
-      const data = await response.json();
-      return data.sessionId;
-    } catch (error) {
-      console.error('Error creating session:', error);
-      throw error;
-    }
+    const data: ChatResponse = await response.json();
+    return data.response;
   },
 };
