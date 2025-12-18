@@ -8,6 +8,7 @@ Initial FastAPI scaffold for the University Catalog system. The project follows 
 - Config management via Pydantic settings (`app/core/config.py`)
 - Health check endpoint as baseline integration test (`app/api/health.py`)
 - `.env` support for environment-specific values
+- SQLAlchemy models with Alembic migrations (`app/models`, `migrations/`)
 
 ## Getting Started
 
@@ -31,3 +32,19 @@ Initial FastAPI scaffold for the University Catalog system. The project follows 
    ```
 
 The API becomes available on `http://127.0.0.1:8000`. Add new routers in `app/api/` and register them through `app/routers.py`.
+
+## Database & Migrations
+
+1. Update `backend/.env` with your Postgres `DATABASE_URL`.
+2. Apply migrations:
+
+   ```bash
+   cd backend
+   alembic upgrade head
+   ```
+
+3. Create new migrations when models change:
+
+   ```bash
+   alembic revision --autogenerate -m "describe change"
+   ```

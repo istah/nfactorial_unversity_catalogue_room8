@@ -1,8 +1,11 @@
 """Configuration objects for the FastAPI application."""
 
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+BASE_DIR = Path(__file__).resolve().parents[2]
 
 
 class Settings(BaseSettings):
@@ -11,9 +14,14 @@ class Settings(BaseSettings):
     app_name: str = "University Catalog API"
     app_version: str = "0.1.0"
     debug: bool = False
-    database_url: str = "postgresql+psycopg://user:password@localhost:5432/university_catalog"
+    database_url: str = (
+        "postgresql+psycopg2://user:password@localhost:5432/university_catalog"
+    )
 
-    model_config = SettingsConfigDict(env_file="backend/.env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=str(BASE_DIR / ".env"),
+        env_file_encoding="utf-8",
+    )
 
 
 @lru_cache
