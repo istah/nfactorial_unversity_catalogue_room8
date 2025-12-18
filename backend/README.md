@@ -1,28 +1,40 @@
 # Backend Service
 
-Initial FastAPI scaffold for the University Catalog system. The project follows an application factory pattern and keeps components modular for future growth (SQLAlchemy, Alembic, etc.).
+## Project Overview
 
-## Features
+The backend powers the University Catalog experience with a FastAPI application that exposes metadata, university listings, and detailed requirements. The codebase embraces modular components (routers, services, schemas, models) so additional resources can be added incrementally without creating monoliths.
 
-- FastAPI app factory (`app/main.py`) with centralized router registration
-- Config management via Pydantic settings (`app/core/config.py`)
-- Health check endpoint as baseline integration test (`app/api/health.py`)
-- `.env` support for environment-specific values
-- SQLAlchemy models with Alembic migrations (`app/models`, `migrations/`)
+## Architecture
 
-## Getting Started
+- **FastAPI application factory** (`app/main.py`) wires routers defined under `app/api/`.
+- **SQLAlchemy 2.0 ORM models** (`app/models/`) capture normalized relations for countries, universities, programs, exams, and requirements.
+- **Service layer** (`app/services/`) encapsulates query logic to keep routers slim and reusable.
+- **Pydantic v2 schemas** (`app/schemas/`) provide typed response contracts.
+- **Alembic migrations** (`migrations/`) manage schema evolution; configuration lives in `backend/alembic.ini`.
+- **Settings & database bootstrap** (`app/core/`) load environment variables and establish database sessions.
 
-1. Create and activate a virtual environment.
-2. Install dependencies:
+## Running Locally
+
+1. Create a virtual environment and install dependencies:
 
    ```bash
+   python -m venv .venv
+   source .venv/bin/activate
    pip install -r backend/requirements.txt
    ```
 
-3. Copy environment template and adjust values:
+2. Configure environment variables:
 
    ```bash
    cp backend/.env.example backend/.env
+   # edit DATABASE_URL, etc. as needed
+   ```
+
+3. Apply migrations (replace the URL if you are not using the `.env` default):
+
+   ```bash
+   cd backend
+   alembic upgrade head
    ```
 
 4. Launch the development server:
@@ -31,36 +43,31 @@ Initial FastAPI scaffold for the University Catalog system. The project follows 
    uvicorn app.main:app --reload --factory --app-dir backend/app
    ```
 
-The API becomes available on `http://127.0.0.1:8000`. Add new routers in `app/api/` and register them through `app/routers.py`.
+   The API will be available at `http://127.0.0.1:8000`.
 
-## Database & Migrations
+## Seeding Demo Data
 
-1. Update `backend/.env` with your Postgres `DATABASE_URL`.
-2. Apply migrations:
-
-   ```bash
-   cd backend
-   alembic upgrade head
-   ```
-
-3. Create new migrations when models change:
-
-   ```bash
-   alembic revision --autogenerate -m "describe change"
-   ```
-
-## Demo Data
-
-Populate the database with reproducible demo data:
+Populate a database with repeatable demo content using the idempotent seed script:
 
 ```bash
 python backend/app/seed.py
 ```
 
-The script is idempotent and can be re-run safely to refresh scores or add missing rows.
+Re-running the command updates existing rows without duplicating data, which is ideal for local demos or automated smoke tests.
+
+## Running Tests
+
+Install pytest (if not already installed), then run:
+
+```bash
+PYTHONPATH=backend pytest backend/tests
+```
+
+The tests spin up an in-memory SQLite database, seed minimal reference data, and exercise the health, universities, and meta endpoints.
 
 ## API Endpoints
 
+- `GET /api/health` – Simple uptime probe.
 - `GET /api/universities` – Supports filters (`country`, `program`, `exam`, `min_score`, `q`) and pagination (`page`, `limit`). Returns country metadata and the number of programs per university.
 - `GET /api/universities/{university_id}` – Returns full university profile, including programs, degree levels, and per-exam minimum scores.
 - `GET /api/meta` – Provides countries, programs, and exams for populating filter dropdowns on the frontend.
